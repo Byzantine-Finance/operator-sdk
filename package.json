@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/byzantine-fi/operator-sdk/issues"
   },
-  "homepage": "https://docs.byzantine.fi"
+  "homepage": "https://docs.byzantine.fi",
+  "publishConfig": {
+    "access": "public"
+  }
 }
