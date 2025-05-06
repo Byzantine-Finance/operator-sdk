@@ -24,7 +24,12 @@ npm install @byzantine/operator-sdk
 
 ```shell
 RPC_URL=https://holesky.infura.io/v3/your_api_key_here
+
+# Choose ONE of the following authentication methods:
 MNEMONIC=your_wallet_mnemonic
+# OR
+PRIVATE_KEY=your_wallet_private_key_without_0x_prefix
+
 DEFAULT_CHAIN_ID=17000  # 17000 for Holesky testnet, 1 for Ethereum Mainnet, 560048 for Hoodi Testnet
 ```
 
@@ -38,7 +43,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+
+// Initialize wallet from either mnemonic or private key
 const wallet = ethers.Wallet.fromPhrase(process.env.MNEMONIC).connect(provider);
+// OR const wallet = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
 
 const client = new ByzOperatorClient({
   chainId: 17000, // 17000 for Holesky, 1 for Mainnet, 560048 for Hoodi
@@ -66,6 +74,8 @@ async function main() {
   const wallet = ethers.Wallet.fromPhrase(process.env.MNEMONIC).connect(
     provider
   );
+  // OR const wallet = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
+
   const userAddress = await wallet.getAddress();
 
   // 4. Initialize client
@@ -138,7 +148,7 @@ await client.isOptedInVault(operatorAddress, vaultAddress);
 
 _Coming soon_
 
-### Native Staking Protocol
+### Native Staking
 
 _Coming soon_
 
@@ -163,7 +173,7 @@ npm test
 - **Holesky Testnet (Chain ID: 17000)**
 - _Hoodi Testnet (Chain ID: 560048) -> Soon_
 
-By default, the SDK is configured to use Holesky testnet (Chain ID: 17000). To use Ethereum Mainnet, specify `chainId: 1` when initializing the client. Or `chainId: 560048` for Hoodi Testnet
+By default, the SDK is configured to use Holesky testnet (Chain ID: 17000). To use Ethereum Mainnet, specify `chainId: 1` when initializing the client. Or `chainId: 560048` for Hoodi Testnet.
 
 ## NPM Package
 

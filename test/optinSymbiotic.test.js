@@ -17,7 +17,7 @@ const { logTitle, logResult, assert } = require("./utils");
 require("dotenv").config();
 
 // Import environment variables
-const { RPC_URL, MNEMONIC, DEFAULT_CHAIN_ID } = process.env;
+const { RPC_URL, MNEMONIC, PRIVATE_KEY, DEFAULT_CHAIN_ID } = process.env;
 
 // Test suite
 async function runTests() {
@@ -35,9 +35,9 @@ async function runTests() {
     skipNetworkTests = true;
   }
 
-  if (!MNEMONIC) {
+  if (!MNEMONIC && !PRIVATE_KEY) {
     console.warn(
-      "⚠️ Warning: MNEMONIC not set in .env file. Wallet tests will be skipped."
+      "⚠️ Warning: Neither MNEMONIC nor PRIVATE_KEY set in .env file. Wallet tests will be skipped."
     );
     skipNetworkTests = true;
   }
@@ -64,7 +64,19 @@ async function runTests() {
 
   // Initialize provider and wallet
   const provider = new ethers.JsonRpcProvider(RPC_URL);
-  const wallet = ethers.Wallet.fromPhrase(MNEMONIC).connect(provider);
+
+  // Initialize wallet based on available credentials
+  let wallet;
+  if (MNEMONIC) {
+    wallet = ethers.Wallet.fromPhrase(MNEMONIC).connect(provider);
+    console.log("Using wallet from mnemonic phrase");
+  } else if (PRIVATE_KEY) {
+    wallet = new ethers.Wallet(PRIVATE_KEY).connect(provider);
+    console.log("Using wallet from private key");
+  } else {
+    throw new Error("No wallet credentials provided");
+  }
+
   const userAddress = await wallet.getAddress();
 
   // Initialize client
