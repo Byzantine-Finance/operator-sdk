@@ -4,12 +4,13 @@ A TypeScript/JavaScript SDK for operators to integrate with Byzantine Finance ec
 
 ## About Byzantine Finance
 
-Byzantine Finance is the first native restaking aggregation and abstraction layer. The platform allows users to deploy various types of vaults for generating staking and restaking revenues, and operators to provide validation services.
+Byzantine Finance is the first native restaking aggregation and abstraction layer. The protocol allows users to deploy various types of vaults for generating staking and restaking revenues, and operators to provide validation services.
 
 This SDK provides a simple interface for operators to register and participate in the Byzantine ecosystem on:
 
 - _Ethereum Mainnet -> Soon_
-- [Holesky Testnet](https://holesky.etherscan.io/)
+- **Holesky Testnet**
+- _Hoodi Testnet -> Soon_
 
 ## Installation
 
@@ -24,7 +25,7 @@ npm install @byzantine/operator-sdk
 ```shell
 RPC_URL=https://holesky.infura.io/v3/your_api_key_here
 MNEMONIC=your_wallet_mnemonic
-DEFAULT_CHAIN_ID=17000  # 17000 for Holesky testnet, 1 for Ethereum Mainnet
+DEFAULT_CHAIN_ID=17000  # 17000 for Holesky testnet, 1 for Ethereum Mainnet, 560048 for Hoodi Testnet
 ```
 
 2. Import and initialize the client:
@@ -40,7 +41,7 @@ const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const wallet = ethers.Wallet.fromPhrase(process.env.MNEMONIC).connect(provider);
 
 const client = new ByzOperatorClient({
-  chainId: 17000, // 17000 for Holesky, 1 for Mainnet
+  chainId: 17000, // 17000 for Holesky, 1 for Mainnet, 560048 for Hoodi
   provider: provider,
   signer: wallet,
 });
@@ -159,9 +160,10 @@ npm test
 ## Supported Networks
 
 - _Ethereum Mainnet (Chain ID: 1) -> Soon_
-- Holesky Testnet (Chain ID: 17000)
+- **Holesky Testnet (Chain ID: 17000)**
+- _Hoodi Testnet (Chain ID: 560048) -> Soon_
 
-By default, the SDK is configured to use Holesky testnet (Chain ID: 17000). To use Ethereum Mainnet, specify `chainId: 1` when initializing the client.
+By default, the SDK is configured to use Holesky testnet (Chain ID: 17000). To use Ethereum Mainnet, specify `chainId: 1` when initializing the client. Or `chainId: 560048` for Hoodi Testnet
 
 ## NPM Package
 

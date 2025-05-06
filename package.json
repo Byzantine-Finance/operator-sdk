@@ -33,14 +33,14 @@
     "rimraf": "^4.0.0",
     "typescript": "^5.0.0"
   },
+  "homepage": "https://byzantine.finance",
   "repository": {
     "type": "git",
-    "url": "https://github.com/byzantine-fi/operator-sdk.git"
+    "url": "git+https://github.com/byzantine-finance/operator-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/byzantine-fi/operator-sdk/issues"
+    "url": "https://github.com/byzantine-finance/operator-sdk/issues"
   },
-  "homepage": "https://docs.byzantine.fi",
   "publishConfig": {
     "access": "public"
   }
