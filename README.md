@@ -126,7 +126,7 @@ main();
 
 Here's a complete example showing how to register a native operator, update its fee, and unregister it:
 
-````js
+```js
 import { ByzOperatorClient } from "@byzantine/operator-sdk";
 import { ethers } from "ethers";
 import * as dotenv from "dotenv";
@@ -152,7 +152,7 @@ const operatorIndex = await client.getNativeOperatorId(operatorName);
 
 // Update fee
 await client.updateNativeOperatorFee(operatorIndex, 500); // 5%
-
+```
 
 ## Available Functions
 
@@ -174,7 +174,7 @@ await client.isOptedInNetwork(operatorAddress, networkAddress);
 await client.optInVault(vaultAddress);
 await client.optOutVault(vaultAddress);
 await client.isOptedInVault(operatorAddress, vaultAddress);
-````
+```
 
 ### Native Staking
 
