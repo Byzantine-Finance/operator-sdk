@@ -8,6 +8,8 @@
 import { ethers, TransactionResponse } from "ethers";
 import { getNetworkConfig } from "../../constants/networks";
 import { VaultOptInServiceABI } from "../../constants/symbiotic/VaultOptInServiceABI";
+import { ChainsOptions } from "../../types";
+import { executeContractMethod, callContractMethod } from "../../utils";
 
 export class OperatorVaultOptInService {
   private contract: ethers.Contract;
@@ -15,10 +17,16 @@ export class OperatorVaultOptInService {
   constructor(
     private readonly provider: ethers.Provider,
     private readonly signer: ethers.Signer,
-    private readonly chainId: 1 | 17000
+    private readonly chainId: ChainsOptions
   ) {
     const networkConfig = getNetworkConfig(this.chainId);
     const contractAddress = networkConfig.operatorVaultOptInService;
+
+    if (!contractAddress || contractAddress === ethers.ZeroAddress) {
+      throw new Error(
+        `Vault Opt-In Service not configured for chain ${this.chainId}`
+      );
+    }
 
     // Initialize contract with ABI and address
     this.contract = new ethers.Contract(
@@ -36,7 +44,10 @@ export class OperatorVaultOptInService {
    * @returns Transaction response
    */
   public async optIn(vaultAddress: string): Promise<TransactionResponse> {
-    return this.contract.optIn(vaultAddress);
+    if (!ethers.isAddress(vaultAddress)) {
+      throw new Error(`Invalid vault address: ${vaultAddress}`);
+    }
+    return executeContractMethod(this.contract, "optIn", vaultAddress);
   }
 
   /**
@@ -47,7 +58,10 @@ export class OperatorVaultOptInService {
    * @returns Transaction response
    */
   public async optOut(vaultAddress: string): Promise<TransactionResponse> {
-    return this.contract.optOut(vaultAddress);
+    if (!ethers.isAddress(vaultAddress)) {
+      throw new Error(`Invalid vault address: ${vaultAddress}`);
+    }
+    return executeContractMethod(this.contract, "optOut", vaultAddress);
   }
 
   /**
@@ -61,6 +75,14 @@ export class OperatorVaultOptInService {
     operatorAddress: string,
     vaultAddress: string
   ): Promise<boolean> {
-    return this.contract.isOptedIn(operatorAddress, vaultAddress);
+    if (!ethers.isAddress(operatorAddress) || !ethers.isAddress(vaultAddress)) {
+      throw new Error("Invalid address provided");
+    }
+    return callContractMethod<boolean>(
+      this.contract,
+      "isOptedIn",
+      operatorAddress,
+      vaultAddress
+    );
   }
 }

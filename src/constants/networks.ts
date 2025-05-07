@@ -6,11 +6,11 @@ import { NetworkConfig, ChainsOptions } from "../types";
 
 export const ETH_TOKEN_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
+// TODO: Add Hoodie Testnet
 export const NETWORKS: Record<number, NetworkConfig> = {
   // Ethereum Mainnet
   1: {
     name: "Ethereum",
-    factoryContractAddress: "0xe0f5fc7913C4aDC0975bD21d20DF7FC27360a267",
     scanLink: "https://etherscan.io",
     stETHAddress: "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
     wstETHAddress: "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
@@ -18,6 +18,10 @@ export const NETWORKS: Record<number, NetworkConfig> = {
     mETHAddress: "0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa",
     ETHxAddress: "0xa35b1b31ce002fbf2058d22f30f95d405200a15b",
 
+    // Native
+    byzOperatorRegistry: "0xEf08Be0D16F92A6ee8244e125230f82AfE5D28D7",
+
+    // Symbiotic
     vaultFactory: "0xAEb6bdd95c502390db8f52c8909F703E9Af6a346",
     delegatorFactory: "0x985Ed57AF9D475f1d83c1c1c8826A0E5A34E8C7B",
     slasherFactory: "0x685c2eD7D59814d2a597409058Ee7a92F21e48Fd",
@@ -33,7 +37,6 @@ export const NETWORKS: Record<number, NetworkConfig> = {
   // Holesky Testnet
   17000: {
     name: "Holesky",
-    factoryContractAddress: "0xe0f5fc7913C4aDC0975bD21d20DF7FC27360a267",
     scanLink: "https://holesky.etherscan.io",
     stETHAddress: "0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034",
     wstETHAddress: "0x8d09a4502Cc8Cf1547aD300E066060D043f6982D",
@@ -41,6 +44,10 @@ export const NETWORKS: Record<number, NetworkConfig> = {
     mETHAddress: "0xe3C063B1BEe9de02eb28352b55D49D85514C67FF",
     ETHxAddress: "0xB4F5fc289a778B80392b86fa70A7111E5bE0F859",
 
+    // Native
+    byzOperatorRegistry: "0xEf08Be0D16F92A6ee8244e125230f82AfE5D28D7",
+
+    // Symbiotic
     vaultFactory: "0x407A039D94948484D356eFB765b3c74382A050B4",
     delegatorFactory: "0x890CA3f95E0f40a79885B7400926544B2214B03f",
     slasherFactory: "0xbf34bf75bb779c383267736c53a4ae86ac7bB299",
@@ -60,7 +67,7 @@ export const NETWORKS: Record<number, NetworkConfig> = {
  * @param chainId - The chain ID to get configuration for
  * @returns Network configuration or undefined if not supported
  */
-export function getNetworkConfig(chainId: 1 | 17000): NetworkConfig {
+export function getNetworkConfig(chainId: ChainsOptions): NetworkConfig {
   return NETWORKS[chainId];
 }
 

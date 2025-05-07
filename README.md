@@ -122,6 +122,38 @@ async function main() {
 main();
 ```
 
+## Quick Start Native
+
+Here's a complete example showing how to register a native operator, update its fee, and unregister it:
+
+````js
+import { ByzOperatorClient } from "@byzantine/operator-sdk";
+import { ethers } from "ethers";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const wallet = ethers.Wallet.fromPhrase(process.env.MNEMONIC).connect(provider);
+
+const client = new ByzOperatorClient({
+  chainId: 17000, // or 560048 for Hoodi
+  provider,
+  signer: wallet,
+});
+
+const operatorName = "your-native-operator-name";
+const admin = await wallet.getAddress();
+const operatorFee = 1000; // 10%
+const managers = [admin];
+
+await tx.wait();
+const operatorIndex = await client.getNativeOperatorId(operatorName);
+
+// Update fee
+await client.updateNativeOperatorFee(operatorIndex, 500); // 5%
+
+
 ## Available Functions
 
 ### Symbiotic Protocol
@@ -142,13 +174,26 @@ await client.isOptedInNetwork(operatorAddress, networkAddress);
 await client.optInVault(vaultAddress);
 await client.optOutVault(vaultAddress);
 await client.isOptedInVault(operatorAddress, vaultAddress);
+````
+
+### Native Staking
+
+```js
+// Registration
+await client.registerNativeOperator(name, admin, operatorFee, managers); // Only for ByzanTeam
+await client.unregisterNativeOperator(operatorIndex); // Only for ByzanTeam
+await client.isNativeOperatorRegistered(name);
+await client.getNativeOperatorId(name);
+await client.getNativeOperatorAdmin(operatorIndex);
+await client.getNativeOperatorFee(operatorIndex);
+
+// Management
+await client.updateNativeOperatorFee(operatorIndex, newFee);
+await client.setNativeOperatorManager(operatorIndex, [address], true);
+await client.transferNativeAdminRole(operatorIndex, newAdmin);
 ```
 
 ### EigenLayer Protocol
-
-_Coming soon_
-
-### Native Staking
 
 _Coming soon_
 
@@ -163,8 +208,14 @@ npm install
 # Build the SDK
 npm run build
 
-# Run tests (requires environment variables in .env file)
-npm test
+# Run all tests
+npm run test
+
+# Run Native test
+npm run test:native
+
+# Run Symbiotic test
+npm run test:symbiotic
 ```
 
 ## Supported Networks

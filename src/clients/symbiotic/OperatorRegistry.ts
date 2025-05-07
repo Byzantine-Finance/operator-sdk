@@ -7,7 +7,9 @@
 
 import { ethers, TransactionResponse } from "ethers";
 import { getNetworkConfig } from "../../constants/networks";
-import { OperatorRegistryABI } from "../../constants/symbiotic/OperatorRegistryABI";
+import { SymbioticOperatorRegistryABI } from "../../constants/symbiotic/OperatorRegistryABI";
+import { ChainsOptions } from "../../types";
+import { executeContractMethod, callContractMethod } from "../../utils";
 
 export class OperatorRegistry {
   private contract: ethers.Contract;
@@ -15,15 +17,21 @@ export class OperatorRegistry {
   constructor(
     private readonly provider: ethers.Provider,
     private readonly signer: ethers.Signer,
-    private readonly chainId: 1 | 17000
+    private readonly chainId: ChainsOptions
   ) {
     const networkConfig = getNetworkConfig(this.chainId);
     const contractAddress = networkConfig.operatorRegistry;
 
+    if (!contractAddress || contractAddress === ethers.ZeroAddress) {
+      throw new Error(
+        `Symbiotic Operator Registry not configured for chain ${this.chainId}`
+      );
+    }
+
     // Initialize contract with ABI and address
     this.contract = new ethers.Contract(
       contractAddress,
-      OperatorRegistryABI,
+      SymbioticOperatorRegistryABI,
       this.signer || this.provider
     );
   }
@@ -35,7 +43,7 @@ export class OperatorRegistry {
    * @returns Transaction response
    */
   public async registerOperator(): Promise<TransactionResponse> {
-    return this.contract.registerOperator();
+    return executeContractMethod(this.contract, "registerOperator");
   }
 
   /**
@@ -45,7 +53,11 @@ export class OperatorRegistry {
    * @returns Boolean indicating if the address is registered as an operator
    */
   public async isOperator(operatorAddress: string): Promise<boolean> {
-    return this.contract.isEntity(operatorAddress);
+    return callContractMethod<boolean>(
+      this.contract,
+      "isEntity",
+      operatorAddress
+    );
   }
 
   /**
@@ -54,7 +66,10 @@ export class OperatorRegistry {
    * @returns The total number of operators
    */
   public async getTotalOperators(): Promise<number> {
-    const totalBigInt = await this.contract.totalEntities();
+    const totalBigInt = await callContractMethod<bigint>(
+      this.contract,
+      "totalEntities"
+    );
     return Number(totalBigInt);
   }
 
@@ -65,6 +80,6 @@ export class OperatorRegistry {
    * @returns The operator address
    */
   public async getOperatorAtIndex(index: number): Promise<string> {
-    return this.contract.entity(index);
+    return callContractMethod<string>(this.contract, "entity", index);
   }
 }

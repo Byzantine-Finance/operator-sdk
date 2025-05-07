@@ -8,6 +8,8 @@
 import { ethers, TransactionResponse } from "ethers";
 import { getNetworkConfig } from "../../constants/networks";
 import { NetworkOptInServiceABI } from "../../constants/symbiotic/NetworkOptInServiceABI";
+import { ChainsOptions } from "../../types";
+import { executeContractMethod, callContractMethod } from "../../utils";
 
 export class OperatorNetworkOptInService {
   private contract: ethers.Contract;
@@ -15,10 +17,16 @@ export class OperatorNetworkOptInService {
   constructor(
     private readonly provider: ethers.Provider,
     private readonly signer: ethers.Signer,
-    private readonly chainId: 1 | 17000
+    private readonly chainId: ChainsOptions
   ) {
     const networkConfig = getNetworkConfig(this.chainId);
     const contractAddress = networkConfig.operatorNetworkOptInService;
+
+    if (!contractAddress || contractAddress === ethers.ZeroAddress) {
+      throw new Error(
+        `Network Opt-In Service not configured for chain ${this.chainId}`
+      );
+    }
 
     // Initialize contract with ABI and address
     this.contract = new ethers.Contract(
@@ -36,7 +44,10 @@ export class OperatorNetworkOptInService {
    * @returns Transaction response
    */
   public async optIn(networkAddress: string): Promise<TransactionResponse> {
-    return this.contract.optIn(networkAddress);
+    if (!ethers.isAddress(networkAddress)) {
+      throw new Error(`Invalid network address: ${networkAddress}`);
+    }
+    return executeContractMethod(this.contract, "optIn", networkAddress);
   }
 
   /**
@@ -47,7 +58,10 @@ export class OperatorNetworkOptInService {
    * @returns Transaction response
    */
   public async optOut(networkAddress: string): Promise<TransactionResponse> {
-    return this.contract.optOut(networkAddress);
+    if (!ethers.isAddress(networkAddress)) {
+      throw new Error(`Invalid network address: ${networkAddress}`);
+    }
+    return executeContractMethod(this.contract, "optOut", networkAddress);
   }
 
   /**
@@ -61,6 +75,17 @@ export class OperatorNetworkOptInService {
     operatorAddress: string,
     networkAddress: string
   ): Promise<boolean> {
-    return this.contract.isOptedIn(operatorAddress, networkAddress);
+    if (
+      !ethers.isAddress(operatorAddress) ||
+      !ethers.isAddress(networkAddress)
+    ) {
+      throw new Error("Invalid address provided");
+    }
+    return callContractMethod<boolean>(
+      this.contract,
+      "isOptedIn",
+      operatorAddress,
+      networkAddress
+    );
   }
 }

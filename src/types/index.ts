@@ -1,10 +1,9 @@
 // @ts-check
 
-export type ChainsOptions = 1 | 17000;
+export type ChainsOptions = 1 | 17000 | 560048;
 
 export interface NetworkConfig {
   name: string;
-  factoryContractAddress: string;
   scanLink: string;
   stETHAddress: string;
   wstETHAddress: string;
@@ -12,6 +11,10 @@ export interface NetworkConfig {
   mETHAddress: string;
   ETHxAddress: string;
 
+  // Native
+  byzOperatorRegistry: string;
+
+  // Symbiotic
   vaultFactory: string;
   delegatorFactory: string;
   slasherFactory: string;

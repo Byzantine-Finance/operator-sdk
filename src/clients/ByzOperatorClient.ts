@@ -26,6 +26,9 @@ import {
   OperatorVaultOptInService,
 } from "./symbiotic";
 
+// Import Native clients
+import { NativeOperatorRegistry } from "./native";
+
 export class ByzOperatorClient {
   public readonly chainId: ChainsOptions;
   private provider: ethers.Provider;
@@ -35,6 +38,9 @@ export class ByzOperatorClient {
   private symOperatorRegistry: OperatorRegistry;
   private symNetworkOptInService: OperatorNetworkOptInService;
   private symVaultOptInService: OperatorVaultOptInService;
+
+  // Native clients
+  private nativeOperatorRegistry: NativeOperatorRegistry;
 
   constructor(options: ByzantineClientOptions) {
     this.chainId = options.chainId;
@@ -64,6 +70,13 @@ export class ByzOperatorClient {
     );
 
     this.symVaultOptInService = new OperatorVaultOptInService(
+      this.provider,
+      this.signer,
+      this.chainId
+    );
+
+    // Initialize Native clients
+    this.nativeOperatorRegistry = new NativeOperatorRegistry(
       this.provider,
       this.signer,
       this.chainId
@@ -199,8 +212,159 @@ export class ByzOperatorClient {
   //=========================================================================
 
   //=========================================================================
-  // NATIVE STAKING PROTOCOL FUNCTIONS (Coming soon)
+  // NATIVE STAKING PROTOCOL FUNCTIONS
   //=========================================================================
+
+  /**
+   * Register as an operator in the Native ecosystem
+   *
+   * @param name - Unique name for the operator
+   * @param admin - Address that will administer the operator (default: signer's address)
+   * @param operatorFee - Fee percentage as uint16 (default: 1000 = 10%)
+   * @param managers - Array of manager addresses (default: empty array)
+   * @returns Transaction response with operator index (bytes32)
+   */
+  public async registerNativeOperator(
+    name: string,
+    admin?: string,
+    operatorFee: number = 1000,
+    managers: string[] = []
+  ): Promise<TransactionResponse> {
+    // Use signer's address as admin if not specified
+    if (!admin) {
+      admin = await this.signer!.getAddress();
+    }
+
+    return this.nativeOperatorRegistry.registerOperator(
+      name,
+      admin,
+      operatorFee,
+      managers
+    );
+  }
+
+  /**
+   * Unregister an operator in the Native ecosystem
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @returns Transaction response
+   */
+  public async unregisterNativeOperator(
+    operatorIndex: string
+  ): Promise<TransactionResponse> {
+    return this.nativeOperatorRegistry.unregisterOperator(operatorIndex);
+  }
+
+  /**
+   * Check if an operator name is already registered
+   *
+   * @param name - The name to check
+   * @returns Boolean indicating if the operator is registered
+   */
+  public async isNativeOperatorRegistered(name: string): Promise<boolean> {
+    return this.nativeOperatorRegistry.isOperatorRegistered(name);
+  }
+
+  /**
+   * Get the operator ID from a name
+   *
+   * @param name - The operator name
+   * @returns Bytes32 ID of the operator
+   */
+  public async getNativeOperatorId(name: string): Promise<string> {
+    return this.nativeOperatorRegistry.getOperatorId(name);
+  }
+
+  /**
+   * Get the admin address of an operator
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @returns Admin address
+   */
+  public async getNativeOperatorAdmin(operatorIndex: string): Promise<string> {
+    return this.nativeOperatorRegistry.getOperatorAdmin(operatorIndex);
+  }
+
+  /**
+   * Get the fee percentage of an operator
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @returns Fee percentage as uint16
+   */
+  public async getNativeOperatorFee(operatorIndex: string): Promise<number> {
+    return this.nativeOperatorRegistry.getOperatorFee(operatorIndex);
+  }
+
+  /**
+   * Check if an address is a manager of an operator
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @param address - The address to check
+   * @returns Boolean indicating if the address is a manager
+   */
+  public async isNativeOperatorManager(
+    operatorIndex: string,
+    address: string
+  ): Promise<boolean> {
+    return this.nativeOperatorRegistry.isManagerOfOperator(
+      operatorIndex,
+      address
+    );
+  }
+
+  /**
+   * Set manager status for an operator
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @param managers - Array of manager addresses
+   * @param isManager - Boolean indicating if the addresses should be managers
+   * @returns Transaction response
+   */
+  public async setNativeOperatorManager(
+    operatorIndex: string,
+    managers: string[],
+    isManager: boolean
+  ): Promise<TransactionResponse> {
+    return this.nativeOperatorRegistry.setOperatorManager(
+      operatorIndex,
+      managers,
+      isManager
+    );
+  }
+
+  /**
+   * Transfer the admin role for an operator
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @param newAdmin - Address of the new admin
+   * @returns Transaction response
+   */
+  public async transferNativeAdminRole(
+    operatorIndex: string,
+    newAdmin: string
+  ): Promise<TransactionResponse> {
+    return this.nativeOperatorRegistry.transferAdminRole(
+      operatorIndex,
+      newAdmin
+    );
+  }
+
+  /**
+   * Update an operator's fee
+   *
+   * @param operatorIndex - The bytes32 index of the operator
+   * @param operatorFee - New fee percentage (as uint16)
+   * @returns Transaction response
+   */
+  public async updateNativeOperatorFee(
+    operatorIndex: string,
+    operatorFee: number
+  ): Promise<TransactionResponse> {
+    return this.nativeOperatorRegistry.updateOperatorFee(
+      operatorIndex,
+      operatorFee
+    );
+  }
 
   //=========================================================================
   // UTILITY FUNCTIONS

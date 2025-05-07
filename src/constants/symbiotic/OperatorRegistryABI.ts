@@ -1,4 +1,4 @@
-export const OperatorRegistryABI = [
+export const SymbioticOperatorRegistryABI = [
   { inputs: [], name: "EntityNotExist", type: "error" },
   { inputs: [], name: "OperatorAlreadyRegistered", type: "error" },
   {

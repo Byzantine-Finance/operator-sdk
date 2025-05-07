@@ -152,11 +152,7 @@ async function runTests() {
         "Not attempted - would likely fail"
       );
     } catch (error) {
-      logResult(
-        "Random registration",
-        false,
-        error.message.substring(0, 30) + "..."
-      );
+      logResult("Random registration", false, error.message);
     }
 
     try {
@@ -169,11 +165,7 @@ async function runTests() {
         "Not attempted - would likely fail"
       );
     } catch (error) {
-      logResult(
-        "Invalid network opt-in",
-        false,
-        error.message.substring(0, 30) + "..."
-      );
+      logResult("Invalid network opt-in", false, error.message);
     }
 
     try {
@@ -186,11 +178,7 @@ async function runTests() {
         "Not attempted - would likely fail"
       );
     } catch (error) {
-      logResult(
-        "Invalid vault opt-in",
-        false,
-        error.message.substring(0, 30) + "..."
-      );
+      logResult("Invalid vault opt-in", false, error.message);
     }
 
     // =============================================
@@ -222,11 +210,7 @@ async function runTests() {
           `Block: ${receipt.blockNumber}`
         );
       } catch (error) {
-        logResult(
-          "Registration failed",
-          false,
-          error.message.substring(0, 30) + "..."
-        );
+        logResult("Registration failed", false, error.message);
       }
     } else {
       logResult("Registration skipped", true, "Already registered");
@@ -263,11 +247,7 @@ async function runTests() {
           `Block: ${receipt.blockNumber}`
         );
       } catch (error) {
-        logResult(
-          "Network opt-in failed",
-          false,
-          error.message.substring(0, 30) + "..."
-        );
+        logResult("Network opt-in failed", false, error.message);
       }
     } else {
       logResult("Network opt-in skipped", true, "Already opted in");
@@ -277,7 +257,7 @@ async function runTests() {
     console.log("/ STEP 3 - Opt into a vault");
 
     // Use the vault factory as an example vault address
-    const testVaultAddress = "0x80fE0b0Ff21996525F4d9FBbb617361262FDcECd";
+    const testVaultAddress = "0xd961f9691fEa2fE5936a92Abe0B0832663e77Bb7";
     logResult("Test vault address", true, testVaultAddress);
 
     // Check if already opted in
@@ -304,11 +284,7 @@ async function runTests() {
           `Block: ${receipt.blockNumber}`
         );
       } catch (error) {
-        logResult(
-          "Vault opt-in failed",
-          false,
-          error.message.substring(0, 30) + "..."
-        );
+        logResult("Vault opt-in failed", false, error.message);
       }
     } else {
       logResult("Vault opt-in skipped", true, "Already opted in");

@@ -16,13 +16,17 @@
     "restaking",
     "byzantine",
     "operator",
-    "symbiotic"
+    "symbiotic",
+    "native"
   ],
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "test": "node test/optinSymbiotic.test.js",
+    "test": "node test/readWalletOperator.js && node test/optinNative.test.js && node test/optinSymbiotic.test.js",
+    "test:native": "node test/optinNative.test.js",
+    "test:symbiotic": "node test/optinSymbiotic.test.js",
+    "test:read": "node test/readWalletOperator.js",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
