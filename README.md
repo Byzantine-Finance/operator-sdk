@@ -211,6 +211,9 @@ npm run build
 # Run all tests
 npm run test
 
+# Run read functions with the wallet
+npm run test:read
+
 # Run Native test
 npm run test:native
 

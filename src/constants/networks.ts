@@ -14,9 +14,6 @@ export const NETWORKS: Record<number, NetworkConfig> = {
     scanLink: "https://etherscan.io",
     stETHAddress: "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
     wstETHAddress: "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0",
-    osETHAddress: "0xf1c9acdc66974dfb6decb12aa385b9cd01190e38",
-    mETHAddress: "0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa",
-    ETHxAddress: "0xa35b1b31ce002fbf2058d22f30f95d405200a15b",
 
     // Native
     byzOperatorRegistry: "0xEf08Be0D16F92A6ee8244e125230f82AfE5D28D7",
@@ -40,12 +37,33 @@ export const NETWORKS: Record<number, NetworkConfig> = {
     scanLink: "https://holesky.etherscan.io",
     stETHAddress: "0x3F1c547b21f65e10480dE3ad8E19fAAC46C95034",
     wstETHAddress: "0x8d09a4502Cc8Cf1547aD300E066060D043f6982D",
-    osETHAddress: "0xF603c5A3F774F05d4D848A9bB139809790890864",
-    mETHAddress: "0xe3C063B1BEe9de02eb28352b55D49D85514C67FF",
-    ETHxAddress: "0xB4F5fc289a778B80392b86fa70A7111E5bE0F859",
 
     // Native
-    byzOperatorRegistry: "0xEf08Be0D16F92A6ee8244e125230f82AfE5D28D7",
+    byzOperatorRegistry: "0x28aCBD4582383c4AB996ee6eBc2340F9b9C57659",
+
+    // Symbiotic
+    vaultFactory: "0x407A039D94948484D356eFB765b3c74382A050B4",
+    delegatorFactory: "0x890CA3f95E0f40a79885B7400926544B2214B03f",
+    slasherFactory: "0xbf34bf75bb779c383267736c53a4ae86ac7bB299",
+    networkRegistry: "0x7d03b7343BF8d5cEC7C0C27ecE084a20113D15C9",
+    networkMetadataService: "0x0F7E58Cc4eA615E8B8BEB080dF8B8FDB63C21496",
+    networkMiddlewareService: "0x62a1ddfD86b4c1636759d9286D3A0EC722D086e3",
+    operatorRegistry: "0x6F75a4ffF97326A00e52662d82EA4FdE86a2C548",
+    operatorMetadataService: "0x0999048aB8eeAfa053bF8581D4Aa451ab45755c9",
+    operatorVaultOptInService: "0x95CC0a052ae33941877c9619835A233D21D57351",
+    operatorNetworkOptInService: "0x58973d16FFA900D11fC22e5e2B6840d9f7e13401",
+    vaultConfigurator: "0xD2191FE92987171691d552C219b8caEf186eb9cA",
+  },
+
+  // Sepolia Testnet
+  11155111: {
+    name: "Ethereum Sepolia",
+    scanLink: "https://sepolia.etherscan.io",
+    stETHAddress: "0x3e3FE7dBc6B4C189E7128855dD526361c49b40Af",
+    wstETHAddress: "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
+
+    // Native
+    byzOperatorRegistry: "0xD73b55dD8a5DF6f9a752f610b2279c82575D23ad",
 
     // Symbiotic
     vaultFactory: "0x407A039D94948484D356eFB765b3c74382A050B4",

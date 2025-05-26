@@ -7,9 +7,6 @@ export interface NetworkConfig {
   scanLink: string;
   stETHAddress: string;
   wstETHAddress: string;
-  osETHAddress: string;
-  mETHAddress: string;
-  ETHxAddress: string;
 
   // Native
   byzOperatorRegistry: string;
